@@ -1,9 +1,6 @@
-import { Inter } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from './context/AuthContext'
-import Header from './components/Header' // <-- 1. Impor
-
-const inter = Inter({ subsets: ['latin'] })
+import Header from './components/Header'
 
 export const metadata = {
   title: 'Recipe App',
@@ -17,9 +14,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <head>
+        {/* Memanggil font Inter langsung dari Google Fonts */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+      </head>
+      <body>
         <AuthProvider>
-          <Header /> {/* <-- 2. Letakkan di sini */}
+          <Header />
           <main>{children}</main>
         </AuthProvider>
       </body>
