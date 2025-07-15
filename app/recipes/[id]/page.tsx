@@ -1,14 +1,15 @@
 import axios from 'axios';
 import { notFound } from 'next/navigation';
 
-// Fungsi untuk mengambil data satu resep
-async function getRecipe(id) {
+// 1. Tambahkan tipe data 'string' untuk parameter 'id'
+async function getRecipe(id: string) {
   try {
-    const response = await axios.get(`http://localhost:4000/api/recipes/${id}`);
+    // 2. Gunakan Environment Variable untuk URL API
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const response = await axios.get(`${apiUrl}/api/recipes/${id}`);
     return response.data;
   } catch (error) {
-    // Jika resep tidak ditemukan (error 404), panggil notFound()
-    if (error.response && error.response.status === 404) {
+    if ((error as any).response && (error as any).response.status === 404) {
       notFound();
     }
     console.error("Gagal mengambil detail resep:", error);
@@ -21,7 +22,8 @@ export default async function RecipeDetailPage({ params }: { params: { id: strin
   const recipe = await getRecipe(params.id);
 
   if (!recipe) {
-    return <p className="text-center mt-12">Tidak bisa memuat resep.</p>;
+    // Pesan ini akan muncul jika terjadi error selain 404
+    return <p className="text-center mt-12">Tidak bisa memuat resep saat ini.</p>;
   }
 
   return (
